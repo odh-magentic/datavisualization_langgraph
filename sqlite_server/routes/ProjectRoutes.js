@@ -28,44 +28,6 @@ const upload = multer({
   },
 });
 
-// Function to delete old files
-const deleteOldFiles = () => {
-  const uploadsDir = path.join(__dirname, "..", "uploads");
-  const currentTime = Date.now();
-  fs.readdir(uploadsDir, (err, files) => {
-    if (err) {
-      console.error("Error reading uploads directory:", err);
-      return;
-    }
-    files.forEach((file) => {
-      if (file.includes("921c838c-541d-4361-8c96-70cb23abd9f5.sqlite")) {
-        return; // Skip deleting '1.sqlite'
-      }
-      const filePath = path.join(uploadsDir, file);
-      fs.stat(filePath, (err, stats) => {
-        if (err) {
-          console.error(`Error getting file stats for ${file}:`, err);
-          return;
-        }
-        const fileAge = currentTime - stats.mtime.getTime();
-        if (fileAge > 14400000) {
-          // 4 hours in milliseconds
-          fs.unlink(filePath, (err) => {
-            if (err) {
-              console.error(`Error deleting file ${file}:`, err);
-            } else {
-              console.log(`Deleted old file: ${file}`);
-            }
-          });
-        }
-      });
-    });
-  });
-};
-
-// Set up interval to run deleteOldFiles every hour
-setInterval(deleteOldFiles, 3600000);
-
 // Function to convert CSV to SQLite
 const convertCsvToSqlite = (csvFilePath, sqliteFilePath) => {
   return new Promise((resolve, reject) => {
