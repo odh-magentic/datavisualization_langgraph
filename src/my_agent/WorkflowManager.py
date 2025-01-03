@@ -77,8 +77,8 @@ if __name__ == "__main__":
 
     result = workflow.invoke(
         {
-            "question": "Who are the top 5 customers by total purchase?",
-            "uuid": "Chinook",
+            "question": "What are the five busiest Shipping Points?",
+            "uuid": "salt_data",
         }
     )
     print(result)
