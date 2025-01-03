@@ -8,3 +8,13 @@ wheels/
 
 # venv
 .venv
+
+
+# parquet files
+parquet_files/
+
+# sqlite db
+salt_data.sqlite
+
+# .DS_Store
+.DS_Store

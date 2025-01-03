@@ -11,6 +11,12 @@
             "driver": "SQLite",
             "database": "${workspaceFolder:datavisualization_langgraph}/sqlite_server/uploads/Chinook.sqlite",
             "name": "Chinook"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:datavisualization_langgraph}/salt_data.sqlite",
+            "name": "SALT"
         }
     ]
 }
