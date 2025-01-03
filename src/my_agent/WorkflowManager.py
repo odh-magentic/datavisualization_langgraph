@@ -4,6 +4,19 @@ from my_agent.SQLAgent import SQLAgent
 from my_agent.DataFormatter import DataFormatter
 from langgraph.graph import END
 
+
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Get OpenAI API key
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+if not OPENAI_API_KEY:
+    raise ValueError("OPENAI_API_KEY environment variable is not set")
+
+
 class WorkflowManager:
     def __init__(self):
         self.sql_agent = SQLAgent()
@@ -21,8 +34,11 @@ class WorkflowManager:
         workflow.add_node("execute_sql", self.sql_agent.execute_sql)
         workflow.add_node("format_results", self.sql_agent.format_results)
         workflow.add_node("choose_visualization", self.sql_agent.choose_visualization)
-        workflow.add_node("format_data_for_visualization", self.data_formatter.format_data_for_visualization)
-        
+        workflow.add_node(
+            "format_data_for_visualization",
+            self.data_formatter.format_data_for_visualization,
+        )
+
         # Define edges
         workflow.add_edge("parse_question", "get_unique_nouns")
         workflow.add_edge("get_unique_nouns", "generate_sql")
@@ -36,7 +52,7 @@ class WorkflowManager:
         workflow.set_entry_point("parse_question")
 
         return workflow
-    
+
     def returnGraph(self):
         return self.create_workflow().compile()
 
@@ -45,8 +61,24 @@ class WorkflowManager:
         app = self.create_workflow().compile()
         result = app.invoke({"question": question, "uuid": uuid})
         return {
-            "answer": result['answer'],
-            "visualization": result['visualization'],
-            "visualization_reason": result['visualization_reason'],
-            "formatted_data_for_visualization": result['formatted_data_for_visualization']
+            "answer": result["answer"],
+            "visualization": result["visualization"],
+            "visualization_reason": result["visualization_reason"],
+            "formatted_data_for_visualization": result[
+                "formatted_data_for_visualization"
+            ],
         }
+
+
+if __name__ == "__main__":
+    workflow_manager = WorkflowManager()
+    workflow = workflow_manager.returnGraph()
+    print(workflow)
+
+    result = workflow.invoke(
+        {
+            "question": "Who are the top 5 customers by total purchase?",
+            "uuid": "Chinook",
+        }
+    )
+    print(result)

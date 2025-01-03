@@ -1,0 +1,16 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:datavisualization_langgraph}/sqlite_server/uploads/921c838c-541d-4361-8c96-70cb23abd9f5.sqlite",
+            "name": "default_upload"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:datavisualization_langgraph}/sqlite_server/uploads/Chinook.sqlite",
+            "name": "Chinook"
+        }
+    ]
+}
